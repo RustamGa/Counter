@@ -22,12 +22,12 @@ export function SettingDisplay(props: DisplayPropsType) {
         <div className={s.counterSettings}>
             <div className={s.inputBlock}>
                  <span>
-            MAX VALUE:
+            max value:
                 <input value={props.maxValue} className={inputErrorStyle} onChange={onChangeMaxValue} type={'number'} max={'99'}
                        min={'-99'}/>
             </span>
                 <span>
-            START VALUE:
+            start value:
             <input value={props.startValue} className={inputErrorStyle} onChange={onChangeStartValue} type={'number'} max={'99'}
                    min={'-99'}/>
             </span>

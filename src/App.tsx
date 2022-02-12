@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 
 import {SettingDisplay} from "./components/counterSetting/SettingDisplay";
-import {ButtonSet} from "./components/counterSetting/ButtonSet";
 import {Display} from "./components/counter/Display";
-import {Button} from "./components/counter/Button";
+import {Button} from "./components/Button/Button";
 
 type stateType = {
     startValue: number
@@ -27,6 +26,46 @@ function App() {
             incDisable: false,
             counterMessage: null
         })
+
+
+    // при загрузке приложения стартовое, максимальное и текущее значения получаются из localstorage
+    useEffect(() => {
+        getFromLocalStorageStartMaxValue()
+    }, [])
+
+    // при выборе максимального или стартого значения сетаем значение в localstorage
+    useEffect(() => {
+        setToLocalStorageStartValue()
+        setToLocalStorageMaxValue()
+    }, [state.startValue, state.maxValue])
+
+    const getFromLocalStorageStartMaxValue = () => {
+        let countAsStringMaxValue = localStorage.getItem('maxValue')
+        let countAsStringStartValue = localStorage.getItem('startValue')
+        if (countAsStringMaxValue && countAsStringStartValue) {
+            let newMaxCount = JSON.parse(countAsStringMaxValue)
+            let newStartCount = JSON.parse(countAsStringStartValue)
+            setDisplayValue({
+                ...state,
+                maxValue: newMaxCount,
+                startValue: newStartCount,
+                count: newStartCount
+            })
+        }
+    }
+
+
+    const setToLocalStorageStartValue = () => {
+        localStorage.setItem('startValue', JSON.stringify(state.startValue))
+    }
+    const setToLocalStorageMaxValue = () => {
+        localStorage.setItem('maxValue', JSON.stringify(state.maxValue))
+    }
+    const clearLocalStorage = () => {
+        localStorage.clear()
+        setDisplayValue({...state, count: 0})
+    }
+// счетчик
     let incData = () => {
         let newCount = state.count + 1
         if (state.count < state.maxValue) {
@@ -36,9 +75,13 @@ function App() {
             setDisplayValue({...state, count: newCount, incDisable: true})
         }
     }
+    // сброс настроек setting
     let resData = () => {
         setDisplayValue({...state, count: state.startValue, incDisable: false})
+        clearLocalStorage()
     }
+
+    // изменение максимального значения в settings
     let changeMaxValue = (maxValue: number) => {
         if (maxValue < 0 || state.startValue === maxValue || maxValue < state.startValue) {
             setDisplayValue({
@@ -52,6 +95,7 @@ function App() {
         } else {
             setDisplayValue({
                 ...state,
+                count: 0,
                 maxValue: maxValue,
                 setDisable: false,
                 counterMessage: "press set",
@@ -60,7 +104,7 @@ function App() {
             })
         }
     }
-
+// изменение стартового значения в settings
     let changeStartValue = (startValue: number) => {
         if (startValue < 0 || startValue === state.maxValue || startValue > state.maxValue) {
             setDisplayValue({
@@ -85,6 +129,7 @@ function App() {
             )
         }
     }
+    // обработчик для кнопки set в settings
     let onSetValue = () => {
         setDisplayValue(
             {

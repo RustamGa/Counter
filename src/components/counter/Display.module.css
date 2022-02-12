@@ -16,15 +16,14 @@
     border-radius: 15px;
     padding: 10px;
     background-color: #4E4E4E;
-    width: 92%;
+    width: 300px;
     text-align: center;
 }
 .maxCountStyle {
     display: flex;
     justify-content: center;
     text-align: center;
-    font-size: 45px;
-    padding: 10px;
+    font-size: 37px;
     min-width: 250px;
     font-weight: bold;
     color: red;

@@ -1,11 +1,12 @@
-.counterSettings { /* настройки счетчика без кнопки */
+.counterSettings {
     display: flex;
     justify-content: space-between;
     border: 3px #6AE0FF solid;
     border-radius: 15px;
-    padding: 5px;
+    padding: 10px 10px;
     background-color: #4E4E4E;
     font-size: 30px;
+    width: 300px;
 }
 
 .inputBlock {
@@ -14,7 +15,7 @@
     justify-content: space-between;
     color: #6AE0FF;
     padding: 5px;
-    min-width: 250px;
+    align-items: flex-start;
 }
 
 .input {
@@ -28,5 +29,5 @@
     margin-left: 10px;
     text-align: center;
     border-color: red;
-    background-color: rgba(255, 0, 0, 0.5);
+    background-color: hotpink;
 }

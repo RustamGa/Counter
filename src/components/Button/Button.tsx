@@ -1,5 +1,5 @@
 import React from "react";
-import s from "../counterSetting/Button.module.css"
+import s from "./Button.module.css"
 export type PropsType = {
     callBack: ()=>void
     title:string
