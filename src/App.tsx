@@ -5,7 +5,7 @@ import {SettingDisplay} from "./components/counterSetting/SettingDisplay";
 import {Display} from "./components/counter/Display";
 import {Button} from "./components/Button/Button";
 
-type stateType = {
+export type StateType = {
     startValue: number
     maxValue: number
     count: number
@@ -15,8 +15,9 @@ type stateType = {
     incDisable: boolean
 }
 
+
 function App() {
-    let [state, setDisplayValue] = useState<stateType>(
+    let [state,  setDisplayValue] = useState<StateType>(
         {
             startValue: 0,
             maxValue: 5,
