@@ -55,7 +55,6 @@ function App() {
         }
     }
 
-
     const setToLocalStorageStartValue = () => {
         localStorage.setItem('startValue', JSON.stringify(state.startValue))
     }

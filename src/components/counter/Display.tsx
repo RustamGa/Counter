@@ -19,7 +19,6 @@ export function Display(props: DisplayPropsType) {
             return s.valueStyle
         } else return s.valueStyle
     }
-    // const displayStyle = props.displayValue === props.maxValue ? {color: "red"} : {}
     return (
         <div className={s.countStyle} >
             <div className={classOfDisplay()}>

@@ -1,16 +1,16 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 
 import {SettingDisplay} from "./components/counterSetting/SettingDisplay";
 import {Display} from "./components/counter/Display";
 import {Button} from "./components/Button/Button";
 import {
-    ChangeMaxValueAC,
-    ChangeStartValueAC,
-    counterReducer,
-    IncDataAC,
+    ChangeMaxValueThunkCreator,
+    ChangeStartValueThunkCreator,
+    SetDataFromLocalstorageThunkCreator,
+    IncDataThunkCreator,
     OnSetValueAC,
-    ResDataAC
+    ResDataThunkCreator
 } from "./state/counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
@@ -25,28 +25,34 @@ export type StateType = {
     incDisable: boolean
 }
 
+// type AppDispatch = AppRootStateType['dispatch'];
 
 function AppWithRedux() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>() // не могу правильно типизировать диспач
     const state = useSelector<AppRootStateType, StateType>(state => state.counter)
+
+    // при загрузке приложения стартовое, максимальное и текущее значения получаются из localstorage
+    useEffect(() => {
+        dispatch(SetDataFromLocalstorageThunkCreator())
+    }, [])
 
 // счетчик
     let incData = () => {
-        dispatch(IncDataAC())
+        dispatch(IncDataThunkCreator())
     }
     // сброс настроек setting
     let resData = () => {
-        dispatch(ResDataAC())
+        dispatch(ResDataThunkCreator())
     }
 
     // изменение максимального значения в settings
     let changeMaxValue = (maxValue: number) => {
-        dispatch(ChangeMaxValueAC(maxValue))
+        dispatch(ChangeMaxValueThunkCreator(maxValue))
     }
 // изменение стартового значения в settings
     let changeStartValue = (startValue: number) => {
-        dispatch(ChangeStartValueAC(startValue))
+        dispatch(ChangeStartValueThunkCreator(startValue))
     }
     // обработчик для кнопки set в settings
     let onSetValue = () => {

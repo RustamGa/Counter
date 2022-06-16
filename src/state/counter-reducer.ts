@@ -1,4 +1,4 @@
-import {useDispatch} from "react-redux";
+import {AppRootStateType} from "./store";
 
 type StateType = {
     startValue: number
@@ -14,6 +14,7 @@ type ResDataActionType = ReturnType<typeof ResDataAC>
 type ChangeMaxValueActionType = ReturnType<typeof ChangeMaxValueAC>
 type ChangeStartValueActionType = ReturnType<typeof ChangeStartValueAC>
 type OnSetValueActionType = ReturnType<typeof OnSetValueAC>
+type SetDisplayValueActionType = ReturnType<typeof SetDisplayValueAC>
 
 
 export const IncDataAC = () => {
@@ -47,21 +48,37 @@ export const OnSetValueAC = () => {
         type: 'ON-SET-VALUE',
     } as const
 }
+export const SetDisplayValueAC = (newMaxCount: number, newStartCount: number, currentCount:number) => {
+    return {
+        type: 'SET-DISPLAY-VALUE',
+        payload: {
+            newMaxCount,
+            newStartCount,
+            currentCount
+        }
+    } as const
+}
 
-type ActionsType = IncDataActionType | ResDataActionType | ChangeMaxValueActionType| ChangeStartValueActionType | OnSetValueActionType
+export type ActionsType =
+    IncDataActionType
+    | ResDataActionType
+    | ChangeMaxValueActionType
+    | ChangeStartValueActionType
+    | OnSetValueActionType
+    | SetDisplayValueActionType
 
 const initialState: StateType = {
     startValue: 0,
     maxValue: 5,
     count: 0,
-    resDisable: false,
-    setDisable: true,
-    incDisable: false,
+    resDisable: true,
+    setDisable: false,
+    incDisable: true,
     counterMessage: null
 }
 
 
-export const counterReducer = (state: StateType=initialState, action: ActionsType): StateType => {
+export const counterReducer = (state: StateType = initialState, action: ActionsType): StateType => {
     switch (action.type) {
         case 'INC-DATA': {
             let newState = {...state}
@@ -110,6 +127,7 @@ export const counterReducer = (state: StateType=initialState, action: ActionsTyp
                 }
             else return {
                 ...state,
+                count: 0,
                 startValue: action.payload.startValue,
                 setDisable: false,
                 counterMessage: "press set",
@@ -128,7 +146,50 @@ export const counterReducer = (state: StateType=initialState, action: ActionsTyp
             }
         }
 
+        case 'SET-DISPLAY-VALUE': {
+            return {
+                ...state,
+                maxValue: action.payload.newMaxCount,
+                startValue: action.payload.newStartCount,
+                count:action.payload.currentCount,
+            }
+        }
+
         default:
             return state
+    }
+}
+
+export const IncDataThunkCreator = () => (dispatch: (action: ActionsType) => void, getState: () => AppRootStateType) => {
+    let currentCount = getState().counter.count
+    localStorage.setItem('currentCount', JSON.stringify(currentCount + 1))
+    dispatch(IncDataAC())
+}
+
+export const ResDataThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
+    localStorage.clear()
+    dispatch(ResDataAC())
+}
+
+export const ChangeMaxValueThunkCreator = (maxValue: number) => (dispatch: (action: ActionsType) => void) => {
+    localStorage.setItem('maxValue', JSON.stringify(maxValue))
+    dispatch(ChangeMaxValueAC(maxValue))
+}
+
+export const ChangeStartValueThunkCreator = (startValue: number) => (dispatch: (action: ActionsType) => void) => {
+    localStorage.setItem('startValue', JSON.stringify(startValue))
+    dispatch(ChangeStartValueAC(startValue))
+}
+
+export const SetDataFromLocalstorageThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
+    let countAsStringMaxValue = localStorage.getItem('maxValue')
+    let countAsStringStartValue = localStorage.getItem('startValue')
+    let countAsStringCurrentValue = localStorage.getItem('currentCount')
+
+    if (countAsStringMaxValue && countAsStringStartValue && countAsStringCurrentValue) {
+        let newMaxCount = JSON.parse(countAsStringMaxValue)
+        let newStartCount = JSON.parse(countAsStringStartValue)
+        let currentCount = JSON.parse(countAsStringCurrentValue)
+        dispatch(SetDisplayValueAC(newMaxCount, newStartCount, currentCount))
     }
 }
