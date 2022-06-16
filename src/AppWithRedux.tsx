@@ -14,6 +14,8 @@ import {
 } from "./state/counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 export type StateType = {
     startValue: number
@@ -24,12 +26,13 @@ export type StateType = {
     setDisable: boolean
     incDisable: boolean
 }
+export type TypedDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>;
 
-// type AppDispatch = AppRootStateType['dispatch'];
 
 function AppWithRedux() {
 
-    const dispatch = useDispatch<any>() // не могу правильно типизировать диспач
+    const dispatch = useDispatch<TypedDispatch>() // типизировал диспач из https://github.com/reduxjs/redux-toolkit/issues/587
+
     const state = useSelector<AppRootStateType, StateType>(state => state.counter)
 
     // при загрузке приложения стартовое, максимальное и текущее значения получаются из localstorage
