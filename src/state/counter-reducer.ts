@@ -160,36 +160,36 @@ export const counterReducer = (state: StateType = initialState, action: ActionsT
     }
 }
 
-export const IncDataThunkCreator = () => (dispatch: (action: ActionsType) => void, getState: () => AppRootStateType) => {
-    let currentCount = getState().counter.count
-    localStorage.setItem('currentCount', JSON.stringify(currentCount + 1))
-    dispatch(IncDataAC())
-}
-
-export const ResDataThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
-    localStorage.clear()
-    dispatch(ResDataAC())
-}
-
-export const ChangeMaxValueThunkCreator = (maxValue: number) => (dispatch: (action: ActionsType) => void) => {
-    localStorage.setItem('maxValue', JSON.stringify(maxValue))
-    dispatch(ChangeMaxValueAC(maxValue))
-}
-
-export const ChangeStartValueThunkCreator = (startValue: number) => (dispatch: (action: ActionsType) => void) => {
-    localStorage.setItem('startValue', JSON.stringify(startValue))
-    dispatch(ChangeStartValueAC(startValue))
-}
-
-export const SetDataFromLocalstorageThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
-    let countAsStringMaxValue = localStorage.getItem('maxValue')
-    let countAsStringStartValue = localStorage.getItem('startValue')
-    let countAsStringCurrentValue = localStorage.getItem('currentCount')
-
-    if (countAsStringMaxValue && countAsStringStartValue && countAsStringCurrentValue) {
-        let newMaxCount = JSON.parse(countAsStringMaxValue)
-        let newStartCount = JSON.parse(countAsStringStartValue)
-        let currentCount = JSON.parse(countAsStringCurrentValue)
-        dispatch(SetDisplayValueAC(newMaxCount, newStartCount, currentCount))
-    }
-}
+// export const IncDataThunkCreator = () => (dispatch: (action: ActionsType) => void, getState: () => AppRootStateType) => {
+//     let currentCount = getState().counter.count
+//     localStorage.setItem('currentCount', JSON.stringify(currentCount + 1))
+//     dispatch(IncDataAC())
+// }
+//
+// export const ResDataThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
+//     localStorage.clear()
+//     dispatch(ResDataAC())
+// }
+//
+// export const ChangeMaxValueThunkCreator = (maxValue: number) => (dispatch: (action: ActionsType) => void) => {
+//     localStorage.setItem('maxValue', JSON.stringify(maxValue))
+//     dispatch(ChangeMaxValueAC(maxValue))
+// }
+//
+// export const ChangeStartValueThunkCreator = (startValue: number) => (dispatch: (action: ActionsType) => void) => {
+//     localStorage.setItem('startValue', JSON.stringify(startValue))
+//     dispatch(ChangeStartValueAC(startValue))
+// }
+//
+// export const SetDataFromLocalstorageThunkCreator = () => (dispatch: (action: ActionsType) => void) => {
+//     let countAsStringMaxValue = localStorage.getItem('maxValue')
+//     let countAsStringStartValue = localStorage.getItem('startValue')
+//     let countAsStringCurrentValue = localStorage.getItem('currentCount')
+//
+//     if (countAsStringMaxValue && countAsStringStartValue && countAsStringCurrentValue) {
+//         let newMaxCount = JSON.parse(countAsStringMaxValue)
+//         let newStartCount = JSON.parse(countAsStringStartValue)
+//         let currentCount = JSON.parse(countAsStringCurrentValue)
+//         dispatch(SetDisplayValueAC(newMaxCount, newStartCount, currentCount))
+//     }
+// }

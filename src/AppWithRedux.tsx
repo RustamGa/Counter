@@ -5,12 +5,10 @@ import {SettingDisplay} from "./components/counterSetting/SettingDisplay";
 import {Display} from "./components/counter/Display";
 import {Button} from "./components/Button/Button";
 import {
-    ChangeMaxValueThunkCreator,
-    ChangeStartValueThunkCreator,
-    SetDataFromLocalstorageThunkCreator,
-    IncDataThunkCreator,
-    OnSetValueAC,
-    ResDataThunkCreator
+    ChangeMaxValueAC, ChangeStartValueAC,
+    IncDataAC,
+    OnSetValueAC, ResDataAC,
+
 } from "./state/counter-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
@@ -36,26 +34,26 @@ function AppWithRedux() {
     const state = useSelector<AppRootStateType, StateType>(state => state.counter)
 
     // при загрузке приложения стартовое, максимальное и текущее значения получаются из localstorage
-    useEffect(() => {
-        dispatch(SetDataFromLocalstorageThunkCreator())
-    }, [])
+    // useEffect(() => {
+    //     dispatch(SetDataFromLocalstorageThunkCreator())
+    // }, [])
 
 // счетчик
     let incData = () => {
-        dispatch(IncDataThunkCreator())
+        dispatch(IncDataAC())
     }
     // сброс настроек setting
     let resData = () => {
-        dispatch(ResDataThunkCreator())
+        dispatch(ResDataAC())
     }
 
     // изменение максимального значения в settings
     let changeMaxValue = (maxValue: number) => {
-        dispatch(ChangeMaxValueThunkCreator(maxValue))
+        dispatch(ChangeMaxValueAC(maxValue))
     }
 // изменение стартового значения в settings
     let changeStartValue = (startValue: number) => {
-        dispatch(ChangeStartValueThunkCreator(startValue))
+        dispatch(ChangeStartValueAC(startValue))
     }
     // обработчик для кнопки set в settings
     let onSetValue = () => {
